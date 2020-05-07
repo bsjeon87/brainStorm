@@ -5,14 +5,14 @@ import "firebase/auth";
 //fire base의 보안 추가(firebase site에서 적용) 시 login을 해야함
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDeFhzet81FR-zeDJjtcd0JnL1Gyc9dEVM",
-  authDomain: "test-e7813.firebaseapp.com",
-  databaseURL: "https://test-e7813.firebaseio.com",
-  projectId: "test-e7813",
-  storageBucket: "test-e7813.appspot.com",
-  messagingSenderId: "556476269300",
-  appId: "1:556476269300:web:0becc527eac6bc5426d4a1",
-  measurementId: "G-0JMLFN610J",
+  apiKey: "AIzaSyAL5mUtRed98tWopw9TyAJslVZja5cOwQE",
+  authDomain: "brainstorm-75309.firebaseapp.com",
+  databaseURL: "https://brainstorm-75309.firebaseio.com",
+  projectId: "brainstorm-75309",
+  storageBucket: "brainstorm-75309.appspot.com",
+  messagingSenderId: "430681668546",
+  appId: "1:430681668546:web:80e6beccf5494e9e4ab45b",
+  measurementId: "G-PB72EJCN9K",
 };
 
 class Firebase {
