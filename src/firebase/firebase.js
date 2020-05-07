@@ -16,12 +16,17 @@ var firebaseConfig = {
 };
 
 class Firebase {
+  login_state = false;
+
   constructor() {
     app.initializeApp(firebaseConfig);
     this.firestore = app.firestore();
     //this.auth = app.auth();
 
     //  this.auth.signInWithEmailAndPassword()
+  }
+  isLogin() {
+    return this.login_state;
   }
   popupLogin() {
     this.provider = new app.auth.GoogleAuthProvider();
