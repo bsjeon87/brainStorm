@@ -1,14 +1,24 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import firebase from "./firebase/firebase";
+import LoginManager from "./services/loginManager";
 import LoginPopup from "./components/loginPopup";
 import Home from "./components/home";
 
 class App extends Component {
-  state = { isLogin2: 0 };
   render() {
-    this.state.isLogin2 = firebase.isLogin();
-    return <div>{this.state.isLogin2 ? <Home /> : <LoginPopup />}</div>;
+    const isLogin = LoginManager.isLogin();
+    console.log("isLogin", isLogin);
+    return (
+      <main className="container">
+        {isLogin == false && <Redirect to="/login"></Redirect>}
+
+        <Switch>
+          <Route path="/home" component={Home} />
+          <Route path="/login" component={LoginPopup} />
+          <Redirect from="/" exact to="/home"></Redirect>
+        </Switch>
+      </main>
+    );
   }
 }
 
