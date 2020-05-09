@@ -45,7 +45,7 @@ class Firebase {
         console.log("uid", user.uid);
         this.userID = user.uid;
         this.login_state = true;
-        LoginHandler.setLogin(true);
+        LoginHandler.setLogin(true, result.user);
 
         /*    this.firestore
           .collection("collection1")
@@ -60,6 +60,42 @@ class Firebase {
       });
     this.login_popup_state = true;
   }
+
+  loadDocuments(collectionName, docName, onGetData) {
+    var docRef = this.firestore.collection(collectionName).doc(docName);
+
+    docRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+          onGetData(doc.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+          onGetData(null);
+        }
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+        onGetData(null);
+      });
+  }
+
+  createDocumentsForUser(collectionName, docName, obj) {
+    // Add a new document in collection "cities"
+    this.firestore
+      .collection(collectionName)
+      .doc(docName)
+      .set(obj)
+      .then(function () {
+        console.log("Document successfully written!");
+      })
+      .catch(function (error) {
+        console.error("Error writing document: ", error);
+      });
+  }
+
   doSignInWithEmailAndPassword(email, password) {
     return this.auth.signInWithEmailAndPassword(email, password);
   }

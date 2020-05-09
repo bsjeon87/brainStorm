@@ -4,9 +4,10 @@ class LoginManager {
   setLoginHandler(onHandler) {
     this.handler = onHandler;
   }
-  setLogin(login) {
+  setLogin(login, user) {
+    this.userUID = user.uid;
     this.loginStatus = login;
-    this.handler(login);
+    this.handler(login, user);
   }
   isLogin() {
     return this.loginStatus;
