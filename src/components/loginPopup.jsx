@@ -13,7 +13,7 @@ class LoginPopup extends Component {
   render() {
     console.log("loginpopup");
     firebase.popupLogin();
-    return <div />;
+    return <div> login Popup</div>;
   }
 }
 
