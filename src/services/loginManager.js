@@ -6,7 +6,7 @@ class LoginManager {
   }
   setLogin(login) {
     this.loginStatus = login;
-    this.handler();
+    this.handler(login);
   }
   isLogin() {
     return this.loginStatus;
