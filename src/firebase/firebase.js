@@ -2,6 +2,8 @@ import app from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import { Redirect } from "react-router-dom";
+import LoginHandler from "../services/loginManager";
+
 //fire base의 보안 추가(firebase site에서 적용) 시 login을 해야함
 
 var firebaseConfig = {
@@ -25,7 +27,7 @@ class Firebase {
 
     //  this.auth.signInWithEmailAndPassword()
   }
-  popupLogin(onResultReceived) {
+  popupLogin() {
     if (this.login_popup_state) return; //already popup
     this.provider = new app.auth.GoogleAuthProvider();
     this.provider.addScope("profile");
@@ -43,7 +45,7 @@ class Firebase {
         console.log("uid", user.uid);
         this.userID = user.uid;
         this.login_state = true;
-        onResultReceived();
+        LoginHandler.setLogin(true);
 
         /*    this.firestore
           .collection("collection1")

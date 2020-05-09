@@ -10,7 +10,7 @@ class App extends Component {
     console.log("isLogin", isLogin);
     return (
       <main className="container">
-        {isLogin == false && <Redirect to="/login"></Redirect>}
+        {isLogin === false && <Redirect to="/login"></Redirect>}
 
         <Switch>
           <Route path="/home" component={Home} />
