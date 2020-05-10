@@ -24,9 +24,13 @@ class Firebase {
     app.initializeApp(firebaseConfig);
     this.firestore = app.firestore();
     //this.auth = app.auth();
-
     //  this.auth.signInWithEmailAndPassword()
   }
+  /*
+  doSignInWithEmailAndPassword(email, password) {
+    return this.auth.signInWithEmailAndPassword(email, password);
+  }
+*/
   popupLogin() {
     if (this.login_popup_state) return; //already popup
     this.provider = new app.auth.GoogleAuthProvider();
@@ -122,8 +126,8 @@ class Firebase {
       });
   }
 
-  updateUserID(collectionName, docName, obj) {
-    var doc_ref = this.firestore.collection(collectionName).doc(docName);
+  updateUserID(paths, obj) {
+    var doc_ref = this.getCollection(paths);
 
     // Set the "capital" field of the city 'DC'
     return doc_ref
@@ -135,24 +139,6 @@ class Firebase {
         // The document probably doesn't exist.
         console.error("Error updating document: ", error);
       });
-  }
-
-  createDocumentsForIdea(collectionName, obj, onResult) {
-    this.firestore
-      .collection(collectionName)
-      .add(obj)
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        onResult(docRef.id);
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-        onResult(null);
-      });
-  }
-
-  doSignInWithEmailAndPassword(email, password) {
-    return this.auth.signInWithEmailAndPassword(email, password);
   }
 }
 
