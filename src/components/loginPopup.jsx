@@ -7,23 +7,23 @@ class LoginPopup extends Component {
     LoginManager.setLoginHandler(this.handleLogin);
   }
   handleLogin = (result, user) => {
-    firebase.loadDocuments(["users", user.uid], (gotData) => {
-      if (gotData != null) {
-        console.log("load user", gotData);
-        {
-          firebase.createDocumentWithoutName(["ideas", user.uid, "idea"], {
-            idealist_id: "test",
-          });
-        }
-      } else {
-        const test = { name: "testname" };
-        firebase.createDocument(["users", user.uid], test);
+    const gotData = firebase.loadDocuments(["users", user.uid]);
+    console.log("load user", gotData);
+    if (gotData != null) {
+      if (
+        firebase.createDocumentWithoutName(["ideas", user.uid, "idea"], {
+          idealist_id: "test",
+        }) === true
+      )
+        console.log("create ok");
+    } else {
+      const test = { name: "testname" };
+      if (firebase.createDocument(["users", user.uid], test) === true)
         console.log("create new user info");
-      }
+    }
 
-      if (result === true) this.props.history.replace("/home");
-      else this.props.history.replace("/login");
-    });
+    if (result === true) this.props.history.replace("/home");
+    else this.props.history.replace("/login");
   };
   render() {
     console.log("loginpopup");

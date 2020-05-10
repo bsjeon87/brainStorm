@@ -72,73 +72,59 @@ class Firebase {
     }
     return fire_ref;
   }
-  loadDocuments(paths, onGetData) {
+  async loadDocuments(paths) {
     var docRef = this.getCollection(paths);
 
-    docRef
-      .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          console.log("Document data:", doc.data());
-          onGetData(doc.data());
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-          onGetData(null);
-        }
-      })
-      .catch(function (error) {
-        console.log("Error getting document:", error);
-        onGetData(null);
-      });
+    try {
+      const doc = await docRef.get();
+
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        return doc.data();
+      } else console.log("No such document!");
+    } catch (err) {
+      console.log("Error getting document:", err);
+    }
+    return null;
   }
 
-  createDocumentWithoutName(paths, obj, onHandle) {
+  async createDocumentWithoutName(paths, obj) {
     console.log("create path", paths);
     var fire_ref = this.getCollection(paths);
-
-    fire_ref
-      .add(obj)
-      .then(function () {
-        console.log("Document successfully updated!");
-        if (onHandle) onHandle();
-      })
-      .catch(function (error) {
-        // The document probably doesn't exist.
-        console.error("Error updating document: ", error);
-        if (onHandle) onHandle();
-      });
+    try {
+      await fire_ref.add(obj);
+      console.log("Document successfully updated!");
+    } catch (err) {
+      console.log("Error updating document:", err);
+      return false;
+    }
+    return true;
   }
 
-  createDocument(paths, obj, onHandle) {
+  async createDocument(paths, obj) {
     // Add a new document in collection
     var fire_ref = this.getCollection(paths);
 
-    fire_ref
-      .set(obj)
-      .then(function () {
-        console.log("Document successfully written!");
-        if (onHandle) onHandle();
-      })
-      .catch(function (error) {
-        console.error("Error writing document: ", error);
-        if (onHandle) onHandle();
-      });
+    try {
+      await fire_ref.set(obj);
+      console.log("Document successfully updated!");
+    } catch (err) {
+      console.log("Error updating document:", err);
+      return false;
+    }
+    return true;
   }
 
-  updateUserID(paths, obj) {
+  async updateUserID(paths, obj) {
     var doc_ref = this.getCollection(paths);
-
-    // Set the "capital" field of the city 'DC'
-    return doc_ref
-      .update(obj)
-      .then(function () {
-        console.log("Document successfully updated!");
-      })
-      .catch(function (error) {
-        // The document probably doesn't exist.
-        console.error("Error updating document: ", error);
-      });
+    try {
+      await doc_ref.update(obj);
+      console.log("Document successfully updated!");
+    } catch (err) {
+      console.error("Error updating document: ", err);
+      return false;
+    }
+    return true;
   }
 }
 
