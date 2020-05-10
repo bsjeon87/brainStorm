@@ -46,23 +46,30 @@ class Firebase {
         this.userID = user.uid;
         this.login_state = true;
         LoginHandler.setLogin(true, result.user);
-
-        /*    this.firestore
-          .collection("collection1")
-          .doc("3HMk4JaUaBeZPDlxqF1x")
-          .get()
-          .then((doc) => {
-            console.log(doc.data());
-            
-            onResultReceived(doc);
-
-          });*/
       });
     this.login_popup_state = true;
   }
 
-  loadDocuments(collectionName, docName, onGetData) {
-    var docRef = this.firestore.collection(collectionName).doc(docName);
+  getCollection(paths) {
+    console.log("create path", paths);
+    var fire_ref = null;
+    for (var i in paths) {
+      console.log("search path", paths[i], i);
+      if (parseInt(i) === 0) {
+        console.log("search path i=0");
+        fire_ref = this.firestore.collection(paths[0]);
+      } else if (i % 2 !== 0) {
+        console.log("search path i=1");
+        fire_ref = fire_ref.doc(paths[i]);
+      } else {
+        console.log("search path i=2");
+        fire_ref = fire_ref.collection(paths[i]);
+      }
+    }
+    return fire_ref;
+  }
+  loadDocuments(paths, onGetData) {
+    var docRef = this.getCollection(paths);
 
     docRef
       .get()
@@ -82,17 +89,65 @@ class Firebase {
       });
   }
 
-  createDocumentsForUser(collectionName, docName, obj) {
-    // Add a new document in collection "cities"
-    this.firestore
-      .collection(collectionName)
-      .doc(docName)
+  createDocumentWithoutName(paths, obj, onHandle) {
+    console.log("create path", paths);
+    var fire_ref = this.getCollection(paths);
+
+    fire_ref
+      .add(obj)
+      .then(function () {
+        console.log("Document successfully updated!");
+        if (onHandle) onHandle();
+      })
+      .catch(function (error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+        if (onHandle) onHandle();
+      });
+  }
+
+  createDocument(paths, obj, onHandle) {
+    // Add a new document in collection
+    var fire_ref = this.getCollection(paths);
+
+    fire_ref
       .set(obj)
       .then(function () {
         console.log("Document successfully written!");
+        if (onHandle) onHandle();
       })
       .catch(function (error) {
         console.error("Error writing document: ", error);
+        if (onHandle) onHandle();
+      });
+  }
+
+  updateUserID(collectionName, docName, obj) {
+    var doc_ref = this.firestore.collection(collectionName).doc(docName);
+
+    // Set the "capital" field of the city 'DC'
+    return doc_ref
+      .update(obj)
+      .then(function () {
+        console.log("Document successfully updated!");
+      })
+      .catch(function (error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+      });
+  }
+
+  createDocumentsForIdea(collectionName, obj, onResult) {
+    this.firestore
+      .collection(collectionName)
+      .add(obj)
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        onResult(docRef.id);
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+        onResult(null);
       });
   }
 

@@ -4,12 +4,10 @@ let userDB = {
   //_authID (doc id)
   //username
   //email
-  // ideas id
-  // materials id
 };
 
 let ideasDB = {
-  //_ideas_id(doc id)
+  //uid(doc id)
   // for each idea(collection)
   // idea id
   // idea category
@@ -18,7 +16,7 @@ let ideasDB = {
 };
 
 let materialsDB = {
-  //_materials_id(doc id)
+  //uid(doc id)
   // for each material(collection)
   // material id
   // material category
