@@ -92,13 +92,13 @@ class Firebase {
     console.log("create path", paths);
     var fire_ref = this.getCollection(paths);
     try {
-      await fire_ref.add(obj);
+      const docRef = await fire_ref.add(obj);
       console.log("Document successfully updated!");
+      return docRef.id;
     } catch (err) {
       console.log("Error updating document:", err);
-      return false;
     }
-    return true;
+    return null;
   }
 
   async createDocument(paths, obj) {
@@ -115,7 +115,7 @@ class Firebase {
     return true;
   }
 
-  async updateUserID(paths, obj) {
+  async update(paths, obj) {
     var doc_ref = this.getCollection(paths);
     try {
       await doc_ref.update(obj);
