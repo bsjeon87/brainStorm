@@ -90,8 +90,8 @@ export async function makesFakeData(user) {
     const result = await firebase.update(
       ["materials", user.uid, "material", materialsDB[index]._id],
       {
-        matrial_id: ideasDB[index]._id,
-        matrial_content: ideasDB[index].content,
+        idea_id: ideasDB[index]._id,
+        idea_content: ideasDB[index].content,
       }
     );
     if (result === true) {
