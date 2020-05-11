@@ -60,13 +60,10 @@ class Firebase {
     for (var i in paths) {
       console.log("search path", paths[i], i);
       if (parseInt(i) === 0) {
-        console.log("search path i=0");
         fire_ref = this.firestore.collection(paths[0]);
       } else if (i % 2 !== 0) {
-        console.log("search path i=1");
         fire_ref = fire_ref.doc(paths[i]);
       } else {
-        console.log("search path i=2");
         fire_ref = fire_ref.collection(paths[i]);
       }
     }
@@ -89,11 +86,11 @@ class Firebase {
   }
 
   async createDocumentWithoutName(paths, obj) {
-    console.log("create path", paths);
+    console.log("createDocumentWithoutName", paths, obj);
     var fire_ref = this.getCollection(paths);
     try {
       const docRef = await fire_ref.add(obj);
-      console.log("Document successfully updated!");
+      console.log("Document successfully updated!", docRef.id);
       return docRef.id;
     } catch (err) {
       console.log("Error updating document:", err);
@@ -103,6 +100,7 @@ class Firebase {
 
   async createDocument(paths, obj) {
     // Add a new document in collection
+    console.log("createDocument", paths, obj);
     var fire_ref = this.getCollection(paths);
 
     try {
