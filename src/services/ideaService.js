@@ -27,8 +27,15 @@ let userinfo = {};
 
 export function getIdeas() {}
 export async function loadingData(user) {
-  const gotData = await firebase.loadAllDocuments(["ideas", user.uid, "idea"]);
-  console.log("load user", gotData);
+  ideas = await firebase.loadAllDocuments(["ideas", user.uid, "idea"]);
+  materials = await firebase.loadAllDocuments([
+    "materials",
+    user.uid,
+    "material",
+  ]);
+
+  console.log("ideas", ideas);
+  console.log("materials", materials);
 }
 
 export async function makesFakeData(user) {
