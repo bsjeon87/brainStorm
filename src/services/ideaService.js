@@ -21,6 +21,16 @@ import firebase from "../firebase/firebase";
 // material contents
 // related id list( id , title)
 
+let ideas = {};
+let materials = {};
+let userinfo = {};
+
+export function getIdeas() {}
+export async function loadingData(user) {
+  const gotData = await firebase.loadAllDocuments(["ideas", user.uid, "idea"]);
+  console.log("load user", gotData);
+}
+
 export async function makesFakeData(user) {
   const usersDB = [{ username: "test_user", email: "bs.jeon@gmail.com" }];
   const ideasDB = [

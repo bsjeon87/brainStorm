@@ -69,6 +69,20 @@ class Firebase {
     }
     return fire_ref;
   }
+  async loadAllDocuments(paths) {
+    var docRef = this.getCollection(paths);
+    var result = [];
+    try {
+      const ret_docs = await docRef.get();
+
+      ret_docs.docs.forEach((doc) => {
+        result.push(doc.data());
+      });
+    } catch (err) {
+      console.log("Error getting document:", err);
+    }
+    return result;
+  }
   async loadDocuments(paths) {
     var docRef = this.getCollection(paths);
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase/firebase";
 import LoginManager from "../services/loginManager";
-import { makesFakeData } from "../services/ideaService";
+import { makesFakeData, loadingData } from "../services/ideaService";
 
 class LoginPopup extends Component {
   constructor() {
@@ -13,6 +13,7 @@ class LoginPopup extends Component {
     console.log("load user", gotData);
     if (gotData != null) {
       console.log("ok");
+      await loadingData(user);
     } else {
       console.log("make Fake Data");
       await makesFakeData(user);
