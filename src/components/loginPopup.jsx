@@ -6,7 +6,7 @@ import { makesFakeData } from "../services/ideaService";
 class LoginPopup extends Component {
   constructor() {
     super();
-    LoginManager.setLoginHandler(this.handleLogin);
+    LoginManager.setLoginHandler(this.handleLogin.bind(this));
   }
   async handleLogin(result, user) {
     const gotData = await firebase.loadDocuments(["users", user.uid]);
