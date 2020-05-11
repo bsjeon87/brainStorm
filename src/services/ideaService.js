@@ -62,7 +62,7 @@ export async function makesFakeData(user) {
     }
   }
   //materials
-  for (var index in materialsDB) {
+  for (index in materialsDB) {
     const material_id = await firebase.createDocumentWithoutName(
       ["materials", user.uid, "material"],
       materialsDB[index]
@@ -73,7 +73,7 @@ export async function makesFakeData(user) {
     }
   }
   //for related
-  for (var index in ideasDB) {
+  for (index in ideasDB) {
     const result = await firebase.update(
       ["ideas", user.uid, "idea", ideasDB[index]._id],
       {
@@ -86,7 +86,7 @@ export async function makesFakeData(user) {
     }
   }
   //material
-  for (var index in materialsDB) {
+  for (index in materialsDB) {
     const result = await firebase.update(
       ["materials", user.uid, "material", materialsDB[index]._id],
       {
