@@ -12,11 +12,14 @@ class App extends Component {
     return (
       <React.Fragment>
         {isLogin === false && <Redirect to="/login"></Redirect>}
+
         <div>
           <Switch>
             <Route path="/home" component={Home} />
             <Route path="/login" component={LoginPopup} />
-            <Redirect from="/" exact to="/home"></Redirect>
+            {isLogin === true && (
+              <Redirect from="/" exact to="/home"></Redirect>
+            )}
           </Switch>
         </div>
       </React.Fragment>
