@@ -3,7 +3,6 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import LoginManager from "./services/loginManager";
 import LoginPopup from "./components/loginPopup";
 import Home from "./components/home";
-import Ideas from "./components/ideas";
 
 class App extends Component {
   render() {
