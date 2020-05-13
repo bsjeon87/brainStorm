@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Like from "./common/like";
 import Table from "./common/table";
 
-class Ideas extends Component {
+class IdeasTable extends Component {
   columns = [
     {
       path: "title",
@@ -12,8 +12,8 @@ class Ideas extends Component {
         <Link to={`/home/ideas/${idea._id}`}>{idea.title}</Link>
       ),
     },
-    { path: "category.name", label: "Category" },
-    { path: "time", label: "Time" },
+    { path: "category", label: "Category" },
+    // { path: "time", label: "Time" },
     {
       key: "1",
       content: (idea) => (
@@ -45,4 +45,4 @@ class Ideas extends Component {
   }
 }
 
-export default ideasTable;
+export default IdeasTable;

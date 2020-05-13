@@ -10,22 +10,35 @@ import firebase from "../firebase/firebase";
 //** collection for each idea
 // idea id   -- auto make
 // idea category
+// idea title
 // idea contents
-// related materials list(id , title)
+// related materials list(id , keyword)
 
 //*materials DB
 //uid(doc id) -- auto make
 //**collection for each material
 // material id -- auto make
 // material category
-// material contents
+// material keyworkd
 // related id list( id , title)
 
-let ideas = {};
+let ideas = null;
 let materials = {};
 let userinfo = {};
 
-export function getIdeas() {}
+export function getCategories(objs) {
+  const categories_from_objs = objs.map((obj, index) => {
+    return { _id: index, name: obj.category };
+  });
+  return categories_from_objs;
+}
+export function getIdeas() {
+  return ideas;
+}
+export function getMaterials() {
+  return materials;
+}
+
 export async function loadingData(user) {
   ideas = await firebase.loadAllDocuments(["ideas", user.uid, "idea"]);
   materials = await firebase.loadAllDocuments([
@@ -41,12 +54,20 @@ export async function loadingData(user) {
 export async function makesFakeData(user) {
   const usersDB = [{ username: "test_user", email: "bs.jeon@gmail.com" }];
   const ideasDB = [
-    { category: "technology", content: " brain storm way using it" },
-    { category: "technology", content: " brain storm way using it22" },
+    {
+      category: "technology",
+      title: "brain1",
+      content: " brain storm way using it",
+    },
+    {
+      category: "technology",
+      title: "brain2",
+      content: " brain storm way using it22",
+    },
   ];
   const materialsDB = [
-    { category: "it", content: "idea" },
-    { category: "network", content: "nfc" },
+    { category: "it", keyword: "idea" },
+    { category: "network", keyword: "nfc" },
   ];
   if ((await firebase.createDocument(["users", user.uid], usersDB[0])) === true)
     console.log("create new user info");
@@ -78,7 +99,7 @@ export async function makesFakeData(user) {
       ["ideas", user.uid, "idea", ideasDB[index]._id],
       {
         matrial_id: materialsDB[index]._id,
-        matrial_content: materialsDB[index].content,
+        matrial_keyword: materialsDB[index].keyword,
       }
     );
     if (result === true) {
@@ -91,7 +112,7 @@ export async function makesFakeData(user) {
       ["materials", user.uid, "material", materialsDB[index]._id],
       {
         idea_id: ideasDB[index]._id,
-        idea_content: ideasDB[index].content,
+        idea_title: ideasDB[index].title,
       }
     );
     if (result === true) {

@@ -76,7 +76,10 @@ class Firebase {
       const ret_docs = await docRef.get();
 
       ret_docs.docs.forEach((doc) => {
-        result.push(doc.data());
+        console.log("doc : ", doc, doc.id, doc._id);
+        let data = doc.data();
+        data._id = doc.id;
+        result.push(data);
       });
     } catch (err) {
       console.log("Error getting document:", err);
