@@ -28,7 +28,7 @@ let userinfo = {};
 
 export function getCategories(objs) {
   const categories_from_objs = objs.map((obj, index) => {
-    return { _id: index, name: obj.category };
+    return { _id: index + 1, name: obj.category };
   });
   return categories_from_objs;
 }
