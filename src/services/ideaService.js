@@ -24,7 +24,7 @@ import firebase from "../firebase/firebase";
 
 let ideas = null;
 let materials = {};
-let userinfo = {};
+let user;
 
 export function getCategories(objs) {
   const categories_from_objs = objs.map((obj, index) => {
@@ -39,6 +39,37 @@ export function getMaterials() {
   return materials;
 }
 
+export async function addNewIdeaWithMaterials(idea, materials) {
+  //ideas
+
+  const idea_id = await firebase.createDocumentWithoutName(
+    ["ideas", user.uid, "idea"],
+    idea
+  );
+  if (idea_id !== null) {
+    idea._id = idea_id;
+    console.log("create user id");
+  } else {
+    //TODO ::FAIL
+    return;
+  }
+
+  materials.map(async (m) => {
+    let result = await firebase.update(
+      ["materials", user.uid, "material", m._id],
+      {
+        idea_id: idea._id,
+        idea_title: idea.title,
+      },
+      true,
+      "ideas"
+    );
+    if (result === true) {
+      console.log("update material ");
+    }
+  });
+}
+
 export async function loadingData(user) {
   ideas = await firebase.loadAllDocuments(["ideas", user.uid, "idea"]);
   materials = await firebase.loadAllDocuments([
@@ -51,7 +82,8 @@ export async function loadingData(user) {
   console.log("materials", materials);
 }
 
-export async function makesFakeData(user) {
+export async function makesFakeData(userArg) {
+  user = userArg;
   const usersDB = [{ username: "test_user", email: "bs.jeon@gmail.com" }];
   const ideasDB = [
     {
@@ -97,9 +129,14 @@ export async function makesFakeData(user) {
   for (index in ideasDB) {
     const result = await firebase.update(
       ["ideas", user.uid, "idea", ideasDB[index]._id],
+
       {
-        matrial_id: materialsDB[index]._id,
-        matrial_keyword: materialsDB[index].keyword,
+        materials: [
+          {
+            matrial_id: materialsDB[index]._id,
+            matrial_keyword: materialsDB[index].keyword,
+          },
+        ],
       }
     );
     if (result === true) {
@@ -110,15 +147,31 @@ export async function makesFakeData(user) {
   for (index in materialsDB) {
     const result = await firebase.update(
       ["materials", user.uid, "material", materialsDB[index]._id],
+
       {
-        idea_id: ideasDB[index]._id,
-        idea_title: ideasDB[index].title,
+        ideas: [
+          {
+            idea_id: ideasDB[index]._id,
+            idea_title: ideasDB[index].title,
+          },
+        ],
       }
     );
     if (result === true) {
       console.log("update material ");
     }
   }
+
+  //test for array element update( add )
+  /* await firebase.update(
+    ["materials", user.uid, "material", materialsDB[0]._id],
+    {
+      idea_id: 6,
+      idea_title: "test",
+    },
+    true,
+    "ideas"
+  ); */
 }
 
 export function getUserInfo(authInfo) {

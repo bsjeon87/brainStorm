@@ -1,6 +1,5 @@
 import app from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import * as firebase from "firebase";
 import { Redirect } from "react-router-dom";
 import LoginHandler from "../services/loginManager";
 
@@ -130,10 +129,14 @@ class Firebase {
     return true;
   }
 
-  async update(paths, obj) {
+  async update(paths, obj, isArray = false, arrayName = "") {
     var doc_ref = this.getCollection(paths);
     try {
-      await doc_ref.update(obj);
+      if (isArray == true) {
+        const arrElement = {};
+        arrElement[arrayName] = firebase.firestore.FieldValue.arrayUnion(obj);
+        await doc_ref.update(arrElement);
+      } else await doc_ref.update(obj);
       console.log("Document successfully updated!");
     } catch (err) {
       console.error("Error updating document: ", err);
