@@ -128,13 +128,32 @@ class Firebase {
     }
     return true;
   }
-
-  async update(paths, obj, isArray = false, arrayName = "") {
+  async delete(paths) {
     var doc_ref = this.getCollection(paths);
     try {
-      if (isArray == true) {
+      await doc_ref.delete();
+      console.log("ok to remove");
+    } catch (err) {
+      console.log("err to remove");
+    }
+  }
+  async update(
+    paths,
+    obj,
+    isArray = false,
+    arrayName = "",
+    isRemoving = false
+  ) {
+    var doc_ref = this.getCollection(paths);
+    try {
+      if (isArray === true) {
         const arrElement = {};
-        arrElement[arrayName] = firebase.firestore.FieldValue.arrayUnion(obj);
+        if (isRemoving === false)
+          arrElement[arrayName] = firebase.firestore.FieldValue.arrayUnion(obj);
+        else
+          arrElement[arrayName] = firebase.firestore.FieldValue.arrayRemove(
+            obj
+          );
         await doc_ref.update(arrElement);
       } else await doc_ref.update(obj);
       console.log("Document successfully updated!");

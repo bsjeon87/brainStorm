@@ -39,7 +39,39 @@ export function getMaterials() {
   return materials;
 }
 
-export async function addNewIdeaWithMaterials(idea, materials) {
+export async function removeIdea(idea) {
+  console.log("remove idea", idea);
+  console.log("remove all materials", materials);
+  ideas = ideas.filter((i) => idea._id !== i._id);
+  var related_material = materials.filter((m) => {
+    console.log("for material", m);
+    for (var index in idea.materials) {
+      console.log("for id", idea.materials[index].material_id);
+      if (m._id === idea.materials[index].material_id) return true;
+    }
+    return false;
+  });
+  console.log("remove related material", related_material);
+  related_material.map(async (m) => {
+    let result = await firebase.update(
+      ["materials", user.uid, "material", m._id],
+      {
+        idea_id: idea._id,
+        idea_title: idea.title,
+      },
+      true,
+      "ideas",
+      true
+    );
+    if (result === true) {
+      console.log("update material ");
+    }
+  });
+
+  await firebase.delete(["ideas", user.uid, "idea", idea._id]);
+}
+
+export async function addNewIdeaWithMaterials(idea, materialsParmeter) {
   //ideas
   ideas.push(idea);
 
@@ -55,7 +87,7 @@ export async function addNewIdeaWithMaterials(idea, materials) {
     return;
   }
 
-  materials.map(async (m) => {
+  materialsParmeter.map(async (m) => {
     let result = await firebase.update(
       ["materials", user.uid, "material", m._id],
       {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getIdeas, getCategories } from "../services/ideaService";
+import { getIdeas, getCategories, removeIdea } from "../services/ideaService";
 import IdeasTable from "./ideasTable";
 import { Link } from "react-router-dom";
 import Pagination from "./common/pagination";
@@ -34,6 +34,7 @@ class Ideas extends Component {
   handleDelete = (idea) => {
     const ideas = this.state.ideas.filter((m) => m._id !== idea._id);
     this.setState({ ideas: ideas }); //this.setState({ movies });
+    removeIdea(idea);
   };
 
   handleSort = (sortColumn) => {
