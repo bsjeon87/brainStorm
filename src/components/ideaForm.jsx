@@ -1,47 +1,61 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
+import { getMaterials, addNewIdeaWithMaterials } from "../services/ideaService";
 
 class IdeaForm extends Form {
   state = {
-    data: { title: "", categoryId: "", numberInStock: "", dailyRentalRate: "" },
+    data: { title: "", category: "", content: "" },
     materials: [],
+    pickedMaterials: [],
     errors: {},
   };
   schema = {
+    // material 하나라도 pick되어야함.
+
     _id: Joi.string(),
     title: Joi.string().required().label("Title"),
-    categoryId: Joi.string().required().label("Genre"),
-    numberInStock: Joi.number()
-      .required()
-      .min(0)
-      .max(100)
-      .label("Number in Stock"),
-    dailyRentalRate: Joi.number()
-      .required()
-      .min(0)
-      .max(10)
-      .label("Daily Rental Rate"),
+    category: Joi.string().required().label("Category"),
+    content: Joi.string().required().label("Content"),
   };
 
-  //TODO( pick btn click)
-  pickmaterial() {
-    //pick 2 materials
-    //show materials(setstate)
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
   }
+
+  //TODO( pick btn click)
+  handlePickmaterial = () => {
+    //show materials(setstate)
+    const { materials } = this.state;
+    if (materials.length === 0) {
+      console.log("no material");
+      return; ///더 뽑을 material 없음.
+    }
+    const pickedMaterials = [...this.state.pickedMaterials];
+
+    const material_index = this.getRandomInt(0, materials.length);
+    const material = { ...materials[material_index] };
+    pickedMaterials.push(material);
+
+    const new_materials = materials.filter(
+      (m, index) => index !== material_index
+    );
+    this.setState({ pickedMaterials, materials: new_materials });
+  };
 
   componentDidMount() {
     const materials = getMaterials();
     this.setState({ materials });
 
-    const movieId = this.props.match.params.id;
-    if (movieId === "new") return;
+    //const movieId = this.props.match.params.id;
+    //if (movieId === "new") return;
 
-    const movie = getMovie(movieId);
-    if (!movie) return this.props.history.replace("/not-found");
+    //const movie = getMovie(movieId);
+    //if (!movie) return this.props.history.replace("/not-found");
 
-    this.setState({ data: this.mapToViewModel(movie) });
+    // this.setState({ data: this.mapToViewModel(movie) });
   }
 
   mapToViewModel(movie) {
@@ -54,24 +68,38 @@ class IdeaForm extends Form {
     };
   }
 
-  doSubmit = () => {
-    saveMovie(this.state.data);
-    this.props.history.push("/movies");
-  };
+  async doSubmit() {
+    const { pickedMaterials } = this.state;
+    let idea = this.state.data;
+    idea.materials = [];
+
+    pickedMaterials.map((m) => {
+      idea.materials.push({ material_id: m._id, material_keyword: m.keyword });
+    });
+
+    await addNewIdeaWithMaterials(idea, pickedMaterials);
+    this.props.history.push("/home/ideas/");
+  }
 
   render() {
+    const { pickedMaterials } = this.state;
     return (
       <div>
         <h1>Idea Form</h1>
-        <button className="btn btn-primary">Generates 2 materials</button>
+        <button className="btn btn-primary" onClick={this.handlePickmaterial}>
+          pick materials
+        </button>
+        {pickedMaterials.map((m) => {
+          return <div key={m._id}>{m.keyword}</div>; // {} 사용시 return을 명시해야함. () 인경우 return을 내포함.
+        })}
 
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           {this.renderInput("title", "Title")}
           {
             //this.renderSelect("genreId", "Genre", this.state.genres)
           }
-          {this.renderInput("numberInStock", "Number in Stock", "number")}
-          {this.renderInput("dailyRentalRate", "Rate")}
+          {this.renderInput("category", "Category")}
+          {this.renderInput("content", "Content")}
           {this.renderButton("Save")}
         </form>
       </div>

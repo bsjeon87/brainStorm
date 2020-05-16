@@ -41,6 +41,7 @@ export function getMaterials() {
 
 export async function addNewIdeaWithMaterials(idea, materials) {
   //ideas
+  ideas.push(idea);
 
   const idea_id = await firebase.createDocumentWithoutName(
     ["ideas", user.uid, "idea"],
@@ -70,7 +71,8 @@ export async function addNewIdeaWithMaterials(idea, materials) {
   });
 }
 
-export async function loadingData(user) {
+export async function loadingData(userArg) {
+  user = userArg;
   ideas = await firebase.loadAllDocuments(["ideas", user.uid, "idea"]);
   materials = await firebase.loadAllDocuments([
     "materials",

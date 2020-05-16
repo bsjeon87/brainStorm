@@ -3,6 +3,7 @@ import NavBar from "./navBar";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Ideas from "./ideas";
 import Materials from "./materials";
+import IdeaForm from "./ideaForm";
 import LoginManager from "../services/loginManager";
 
 const Home = () => {
@@ -13,8 +14,11 @@ const Home = () => {
       <NavBar />
       <main className="container">
         <Switch>
+          {isLogin === true && (
+            <Route path="/home/ideas/:id" component={IdeaForm}></Route>
+          )}
           {isLogin === true && <Route path="/home/ideas" component={Ideas} />}
-          {isLogin == true && (
+          {isLogin === true && (
             <Route path="/home/materials" component={Materials} />
           )}
         </Switch>
