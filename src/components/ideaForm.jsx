@@ -4,6 +4,7 @@ import Form from "./common/form";
 import {
   getMaterials,
   addNewIdeaWithMaterials,
+  updateIdeaWithMaterials,
   getIdea,
 } from "../services/ideaService";
 
@@ -54,6 +55,7 @@ class IdeaForm extends Form {
     this.setState({ materials });
 
     const ideaid = this.props.match.params.id;
+    this.ideaid = ideaid;
     if (ideaid === "new") return;
 
     const idea = getIdea(ideaid);
@@ -89,8 +91,9 @@ class IdeaForm extends Form {
     pickedMaterials.map((m) => {
       idea.materials.push({ material_id: m._id, material_keyword: m.keyword });
     });
-
-    await addNewIdeaWithMaterials(idea, pickedMaterials);
+    if (this.ideaid === "new")
+      await addNewIdeaWithMaterials(idea, pickedMaterials);
+    else await updateIdeaWithMaterials(idea);
     this.props.history.push("/home/ideas/");
   }
 

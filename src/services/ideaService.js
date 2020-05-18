@@ -12,7 +12,7 @@ import firebase from "../firebase/firebase";
 // idea category
 // idea title
 // idea contents
-// related materials list(id , keyword)
+// related materials list(id )
 
 //*materials DB
 //uid(doc id) -- auto make
@@ -20,7 +20,7 @@ import firebase from "../firebase/firebase";
 // material id -- auto make
 // material category
 // material keyworkd
-// related id list( id , title)
+// related id list( id )
 
 let ideas = null;
 let materials = {};
@@ -62,7 +62,6 @@ export async function removeIdea(idea) {
       ["materials", user.uid, "material", m._id],
       {
         idea_id: idea._id,
-        idea_title: idea.title,
       },
       true,
       "ideas",
@@ -75,7 +74,76 @@ export async function removeIdea(idea) {
 
   await firebase.delete(["ideas", user.uid, "idea", idea._id]);
 }
+export async function updateIdeaWithMaterials(new_idea) {
+  // 0. 기존 idea찾기
+  // 1. 기존 idea의 material과 차이점 찾기.
+  // 1-1. 없어진 material업데이트.
+  // 1-2. 새로생긴 material 업데이트.
+  // 2. idea doc 전체 업데이트
 
+  const idea = getIdea(new_idea._id);
+  if (!idea) return;
+
+  console.log("update idea1", idea);
+  console.log("update new idea1", new_idea);
+  //기존에는 있었으나 새로운 아이디에는 없어짐.
+  const diff_for_removingMaterial = idea.materials.filter((m) => {
+    for (var index in new_idea.materials) {
+      console.log("diff ", m.material_id);
+      console.log("diff2 ", new_idea.materials[index].material_id);
+      if (m.material_id === new_idea.materials[index].material_id) return false;
+    }
+    return true;
+  });
+  console.log("update idea2 1", diff_for_removingMaterial);
+  diff_for_removingMaterial.map(async (m) => {
+    await firebase.update(
+      ["materials", user.uid, "material", m.material_id],
+      {
+        idea_id: idea._id,
+      },
+      true,
+      "ideas",
+      true
+    );
+  });
+
+  console.log("update idea2");
+  //기존에는 없었으나 새로운 아이디어에는 새로 생김.
+  const diff_for_addingMaterial = new_idea.materials.filter((m) => {
+    for (var index in idea.materials) {
+      if (m.material_id === idea.materials[index].material_id) return false;
+    }
+    return true;
+  });
+  diff_for_addingMaterial.map(async (m) => {
+    await firebase.update(
+      ["materials", user.uid, "material", m.material_id],
+      {
+        idea_id: idea._id,
+      },
+      true,
+      "ideas",
+      false
+    );
+  });
+
+  console.log("update idea");
+  //idea update
+  const result = await firebase.update(
+    ["ideas", user.uid, "idea", new_idea._id],
+
+    {
+      category: new_idea.category,
+      title: new_idea.title,
+      content: new_idea.content,
+      materials: new_idea.materials,
+    }
+  );
+  if (result === true) {
+    console.log("update idea ");
+  }
+}
 export async function addNewIdeaWithMaterials(idea, materialsParmeter) {
   //ideas
   ideas.push(idea);
@@ -173,7 +241,6 @@ export async function makesFakeData(userArg) {
         materials: [
           {
             material_id: materialsDB[index]._id,
-            material_keyword: materialsDB[index].keyword,
           },
         ],
       }
@@ -191,7 +258,6 @@ export async function makesFakeData(userArg) {
         ideas: [
           {
             idea_id: ideasDB[index]._id,
-            idea_title: ideasDB[index].title,
           },
         ],
       }
