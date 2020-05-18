@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMaterials, addNewIdeaWithMaterials } from "../services/ideaService";
+import {
+  getMaterials,
+  addNewIdeaWithMaterials,
+  getIdea,
+} from "../services/ideaService";
 
 class IdeaForm extends Form {
   state = {
@@ -49,22 +53,31 @@ class IdeaForm extends Form {
     const materials = getMaterials();
     this.setState({ materials });
 
-    //const movieId = this.props.match.params.id;
-    //if (movieId === "new") return;
+    const ideaid = this.props.match.params.id;
+    if (ideaid === "new") return;
 
-    //const movie = getMovie(movieId);
-    //if (!movie) return this.props.history.replace("/not-found");
-
-    // this.setState({ data: this.mapToViewModel(movie) });
+    const idea = getIdea(ideaid);
+    if (!idea) return this.props.history.replace("/not-found");
+    console.log("pickup1", idea.materials);
+    console.log("materials", materials);
+    this.state.pickedMaterials = [
+      ...materials.filter((m) => {
+        for (var index in idea.materials) {
+          if (m._id === idea.materials[index].material_id) return true;
+        }
+        return false;
+      }),
+    ];
+    console.log("pickup", this.pickedMaterials);
+    this.setState({ data: this.mapToViewModel(idea) });
   }
 
-  mapToViewModel(movie) {
+  mapToViewModel(idea) {
     return {
-      _id: movie._id,
-      title: movie.title,
-      genreId: movie.genre._id,
-      numberInStock: movie.numberInStock,
-      dailyRentalRate: movie.dailyRentalRate,
+      _id: idea._id,
+      title: idea.title,
+      category: idea.category,
+      content: idea.content,
     };
   }
 
@@ -83,6 +96,7 @@ class IdeaForm extends Form {
 
   render() {
     const { pickedMaterials } = this.state;
+    console.log("draw", pickedMaterials);
     return (
       <div>
         <h1>Idea Form</h1>

@@ -32,6 +32,11 @@ export function getCategories(objs) {
   });
   return categories_from_objs;
 }
+export function getIdea(ideaId) {
+  const ideaArr = ideas.filter((i) => i._id === ideaId);
+  console.log("find idea", ideaArr);
+  return ideaArr[0];
+}
 export function getIdeas() {
   return ideas;
 }
@@ -167,8 +172,8 @@ export async function makesFakeData(userArg) {
       {
         materials: [
           {
-            matrial_id: materialsDB[index]._id,
-            matrial_keyword: materialsDB[index].keyword,
+            material_id: materialsDB[index]._id,
+            material_keyword: materialsDB[index].keyword,
           },
         ],
       }
