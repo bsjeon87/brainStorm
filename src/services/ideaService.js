@@ -37,6 +37,12 @@ export function getIdea(ideaId) {
   console.log("find idea", ideaArr);
   return ideaArr[0];
 }
+export function getMaterial(materialId) {
+  const matarialArr = materials.filter((m) => m._id === materialId);
+  console.log("find matarial", matarialArr);
+  return matarialArr[0];
+}
+
 export function getIdeas() {
   return ideas;
 }
@@ -89,13 +95,10 @@ export async function updateIdeaWithMaterials(new_idea) {
   //기존에는 있었으나 새로운 아이디에는 없어짐.
   const diff_for_removingMaterial = idea.materials.filter((m) => {
     for (var index in new_idea.materials) {
-      console.log("diff ", m.material_id);
-      console.log("diff2 ", new_idea.materials[index].material_id);
       if (m.material_id === new_idea.materials[index].material_id) return false;
     }
     return true;
   });
-  console.log("update idea2 1", diff_for_removingMaterial);
   diff_for_removingMaterial.map(async (m) => {
     await firebase.update(
       ["materials", user.uid, "material", m.material_id],
@@ -106,9 +109,11 @@ export async function updateIdeaWithMaterials(new_idea) {
       "ideas",
       true
     );
+    let material = getMaterial(m.material_id);
+    const material_ideas = material.ideas.filter((i) => idea._id !== i.idea_id);
+    material.ideas = material_ideas;
   });
 
-  console.log("update idea2");
   //기존에는 없었으나 새로운 아이디어에는 새로 생김.
   const diff_for_addingMaterial = new_idea.materials.filter((m) => {
     for (var index in idea.materials) {
@@ -126,6 +131,8 @@ export async function updateIdeaWithMaterials(new_idea) {
       "ideas",
       false
     );
+    let material = getMaterial(m.material_id);
+    material.ideas.push(idea._id);
   });
 
   console.log("update idea");
@@ -143,6 +150,11 @@ export async function updateIdeaWithMaterials(new_idea) {
   if (result === true) {
     console.log("update idea ");
   }
+
+  idea.category = new_idea.category;
+  idea.title = new_idea.title;
+  idea.content = new_idea.content;
+  idea.materials = new_idea.materials;
 }
 export async function addNewIdeaWithMaterials(idea, materialsParmeter) {
   //ideas

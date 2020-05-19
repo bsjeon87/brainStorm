@@ -89,7 +89,7 @@ class IdeaForm extends Form {
     idea.materials = [];
 
     pickedMaterials.map((m) => {
-      idea.materials.push({ material_id: m._id, material_keyword: m.keyword });
+      idea.materials.push({ material_id: m._id });
     });
     if (this.ideaid === "new")
       await addNewIdeaWithMaterials(idea, pickedMaterials);
