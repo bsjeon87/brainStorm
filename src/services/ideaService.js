@@ -50,6 +50,35 @@ export function getMaterials() {
   return materials;
 }
 
+export async function addNewMaterial(material) {
+  materials.push(material);
+
+  const material_id = await firebase.createDocumentWithoutName(
+    ["materials", user.uid, "material"],
+    material
+  );
+  if (material_id !== null) {
+    material._id = material_id;
+  } else {
+    //TODO ::FAIL
+    return;
+  }
+}
+export async function updateMaterial(new_material) {
+  let material = getMaterial(new_material._id);
+  //material update
+  const result = await firebase.update(
+    ["materials", user.uid, "material", new_material._id],
+    {
+      category: new_material.category,
+      keyword: new_material.keyword,
+    }
+  );
+
+  material.category = new_material.category;
+  material.keyword = new_material.keyword;
+}
+
 export async function removeIdea(idea) {
   console.log("remove idea", idea);
   console.log("remove all materials", materials);
