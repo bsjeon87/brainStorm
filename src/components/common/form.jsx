@@ -45,6 +45,24 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  renderTextArea(name, label, row = 1, type = "text") {
+    const { data, errors } = this.state;
+    return (
+      <div class="form-group">
+        <label for={name}>{label}</label>
+        <textarea
+          class="form-control"
+          rows={row}
+          type={type}
+          name={name}
+          value={data[name]}
+          label={label}
+          onChange={this.handleChange}
+          error={errors[name]}
+        ></textarea>
+      </div>
+    );
+  }
   renderButton(label) {
     return (
       <button disabled={this.validate()} className="btn btn-primary">

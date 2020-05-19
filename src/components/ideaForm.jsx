@@ -111,12 +111,12 @@ class IdeaForm extends Form {
         })}
 
         <form onSubmit={this.handleSubmit.bind(this)}>
-          {this.renderInput("title", "Title")}
+          {this.renderInput("title", "Title", 5)}
           {
             //this.renderSelect("genreId", "Genre", this.state.genres)
           }
           {this.renderInput("category", "Category")}
-          {this.renderInput("content", "Content")}
+          {this.renderTextArea("content", "Content", 5)}
           {this.renderButton("Save")}
         </form>
       </div>
