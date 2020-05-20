@@ -117,16 +117,20 @@ class Materials extends Component {
   render() {
     const { length: count } = this.state.materials; //ideas length를 count로 받음.
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-    if (count === 0) return <p> There are no ideas in the databases</p>;
-
+    //if (count === 0) return <p> There are no ideas in the databases</p>;
+    let category_filter = [];
+    category_filter = this.state.category.filter((c) => {
+      if (category_filter.includes(c.name) === true) return false;
+      category_filter.push(c.name);
+      return true;
+    });
     const { totalCount, data: materials } = this.getPagedData();
 
-    console.log("category:", this.state.category);
     return (
       <div className="row">
         <div className="col-3">
           <ListGroup
-            items={this.state.category}
+            items={category_filter}
             selectedItem={this.state.selectedCategory}
             onItemSelect={this.handleCatgorySelect}
           />

@@ -48,10 +48,10 @@ class Form extends Component {
   renderTextArea(name, label, row = 1, type = "text") {
     const { data, errors } = this.state;
     return (
-      <div class="form-group">
-        <label for={name}>{label}</label>
+      <div className="form-group">
+        <label htmlFor={name}>{label}</label>
         <textarea
-          class="form-control"
+          className="form-control"
           rows={row}
           type={type}
           name={name}
