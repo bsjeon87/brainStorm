@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase/firebase";
 import LoginManager from "../services/loginManager";
-import { makesFakeData, loadingData } from "../services/ideaService";
+import { makesUser, loadingData } from "../services/ideaService";
 
 class LoginPopup extends Component {
   constructor() {
@@ -15,8 +15,8 @@ class LoginPopup extends Component {
       console.log("ok");
       await loadingData(user);
     } else {
-      console.log("make Fake Data");
-      await makesFakeData(user);
+      console.log("make user");
+      await makesUser(user);
     }
 
     if (result === true) this.props.history.replace("/home");

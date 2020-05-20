@@ -22,12 +22,15 @@ import firebase from "../firebase/firebase";
 // material keyworkd
 // related id list( id )
 
-let ideas = null;
-let materials = {};
+let ideas = [];
+let materials = [];
 let user;
 
 export function getCategories(objs) {
-  const categories_from_objs = objs.map((obj, index) => {
+  let categories_from_objs = [];
+  if (objs.length === 0) return categories_from_objs;
+
+  categories_from_objs = objs.map((obj, index) => {
     return { _id: index + 1, name: obj.category };
   });
   return categories_from_objs;
@@ -232,9 +235,17 @@ export async function loadingData(userArg) {
   console.log("ideas", ideas);
   console.log("materials", materials);
 }
-
+export async function makesUser(userArg) {
+  user = userArg;
+  console.log(userArg);
+  const userdata = { username: user.displayName, email: user.email };
+  console.log("user datalog", userdata);
+  if ((await firebase.createDocument(["users", user.uid], userdata)) === true)
+    console.log("create new user info");
+}
 export async function makesFakeData(userArg) {
   user = userArg;
+  console.log(userArg);
   const usersDB = [{ username: "test_user", email: "bs.jeon@gmail.com" }];
   const ideasDB = [
     {
