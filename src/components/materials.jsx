@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { getMaterials, getCategories } from "../services/ideaService";
+import {
+  getMaterials,
+  getCategories,
+  removeMaterial,
+} from "../services/ideaService";
 import MaterialsTable from "./materialsTable";
 import { Link } from "react-router-dom";
 import Pagination from "./common/pagination";
@@ -32,10 +36,20 @@ class Materials extends Component {
   }
 
   handleDelete = (material) => {
+    if (
+      material.ideas !== null &&
+      material.ideas !== undefined &&
+      material.ideas.length > 0
+    ) {
+      console.log("not avaliable delete", material);
+      return;
+    }
+
     const materials = this.state.materials.filter(
       (m) => m._id !== material._id
     );
     this.setState({ materials: materials }); //this.setState({ movies });
+    removeMaterial(material);
   };
 
   handleSort = (sortColumn) => {

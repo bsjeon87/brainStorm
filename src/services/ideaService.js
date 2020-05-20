@@ -78,7 +78,11 @@ export async function updateMaterial(new_material) {
   material.category = new_material.category;
   material.keyword = new_material.keyword;
 }
-
+export async function removeMaterial(material) {
+  console.log("remove Material", material);
+  materials = materials.filter((m) => m._id !== material._id);
+  await firebase.delete(["materials", user.uid, "material", material._id]);
+}
 export async function removeIdea(idea) {
   console.log("remove idea", idea);
   console.log("remove all materials", materials);
@@ -206,7 +210,6 @@ export async function addNewIdeaWithMaterials(idea, materialsParmeter) {
       ["materials", user.uid, "material", m._id],
       {
         idea_id: idea._id,
-        idea_title: idea.title,
       },
       true,
       "ideas"
