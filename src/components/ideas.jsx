@@ -103,10 +103,9 @@ class Ideas extends Component {
       category_filter.push(c.name);
       return true;
     });
-    console.log("c", category_filter);
+
     const { totalCount, data: ideas } = this.getPagedData();
 
-    console.log("category:", this.state.category);
     return (
       <div className="row">
         <div className="col-3">
