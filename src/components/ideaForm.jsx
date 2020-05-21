@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+
+import Tags from "./common/hashTags";
 import {
   getMaterials,
   addNewIdeaWithMaterials,
@@ -22,6 +24,13 @@ class IdeaForm extends Form {
     title: Joi.string().required().label("Title"),
     category: Joi.string().required().label("Category"),
     content: Joi.string().required().label("Content"),
+  };
+
+  handleMaterialTagClick = (tag) => {
+    const filtered_tags = this.state.pickedMaterials.filter(
+      (t) => t.keyword !== tag
+    );
+    this.setState({ pickedMaterials: filtered_tags });
   };
 
   getRandomInt(min, max) {
@@ -99,17 +108,18 @@ class IdeaForm extends Form {
 
   render() {
     const { pickedMaterials } = this.state;
+    const material_tags = pickedMaterials.map((m) => {
+      return m.keyword; // {} 사용시 return을 명시해야함. () 인경우 return을 내포함.
+    });
     console.log("draw", pickedMaterials);
     return (
       <div>
         <h1>Idea Form</h1>
+
         <button className="btn btn-primary" onClick={this.handlePickmaterial}>
           pick materials
         </button>
-        {pickedMaterials.map((m) => {
-          return <div key={m._id}>{m.keyword}</div>; // {} 사용시 return을 명시해야함. () 인경우 return을 내포함.
-        })}
-
+        <Tags tags={material_tags} onClose={this.handleMaterialTagClick}></Tags>
         <form onSubmit={this.handleSubmit.bind(this)}>
           {this.renderInput("title", "Title", 5)}
           {
