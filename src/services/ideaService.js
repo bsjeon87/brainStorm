@@ -149,6 +149,8 @@ export async function updateIdeaWithMaterials(new_idea) {
       true
     );
     let material = getMaterial(m.material_id);
+    if (material.ideas === null || material.ideas === undefined)
+      material.ideas = [];
     const material_ideas = material.ideas.filter((i) => idea._id !== i.idea_id);
     material.ideas = material_ideas;
   });
