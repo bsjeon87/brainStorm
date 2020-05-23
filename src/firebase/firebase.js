@@ -53,7 +53,12 @@ class Firebase {
         this.login_popup_state = true;
       })
       .catch((Err) => {
-        this.login_popup_state = false;
+        if (Err.code === "auth/cancelled-popup-request") {
+          console.log("err2", Err);
+          return;
+        }
+        console.log("err", Err);
+        alert("failed to login, need to login");
       });
   }
 

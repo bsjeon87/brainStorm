@@ -55,6 +55,7 @@ class MaterialForm extends Form {
     materials = materials.filter((m) => m.keyword === material.keyword);
     if (materials.length > 0) {
       console.log("can't add same keword");
+      alert("can't add same keword");
       return;
     }
 
@@ -70,8 +71,12 @@ class MaterialForm extends Form {
         <h1>Material Form</h1>
         <div align="right">
           <div>related ideas</div>
-          {ideas.map((i) => {
-            return <Link to={`/home/ideas/${i._id}`}>{i.title}</Link>;
+          {ideas.map((i, index) => {
+            return (
+              <Link key={index} to={`/home/ideas/${i._id}`}>
+                {i.title}
+              </Link>
+            );
           })}
         </div>
         <form onSubmit={this.handleSubmit.bind(this)}>

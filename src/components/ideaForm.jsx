@@ -51,6 +51,7 @@ class IdeaForm extends Form {
     const { materials } = this.state;
     if (materials.length === 0) {
       console.log("no material");
+      alert("there are no more material to pick up");
       return; ///더 뽑을 material 없음.
     }
     const pickedMaterials = [...this.state.pickedMaterials];

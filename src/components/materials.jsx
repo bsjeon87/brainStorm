@@ -42,6 +42,7 @@ class Materials extends Component {
       material.ideas.length > 0
     ) {
       console.log("not avaliable delete", material);
+      alert("not avaliable delete because there are related ideas");
       return;
     }
 
