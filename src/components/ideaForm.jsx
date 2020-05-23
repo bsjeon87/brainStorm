@@ -67,6 +67,7 @@ class IdeaForm extends Form {
 
   componentDidMount() {
     let materials = getMaterials();
+    this.setState({ materials });
 
     const ideaid = this.props.match.params.id;
     this.ideaid = ideaid;
@@ -89,7 +90,6 @@ class IdeaForm extends Form {
       return true;
     });
 
-    this.setState({ materials });
     console.log("pickup", this.state.pickedMaterials);
     this.setState({ data: this.mapToViewModel(idea) });
   }
