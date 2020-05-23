@@ -7,6 +7,7 @@ import {
   getMaterial,
   updateMaterial,
   addNewMaterial,
+  getMaterials,
 } from "../services/ideaService";
 
 class MaterialForm extends Form {
@@ -50,6 +51,12 @@ class MaterialForm extends Form {
 
   async doSubmit() {
     let material = this.state.data;
+    let materials = getMaterials();
+    materials = materials.filter((m) => m.keyword === material.keyword);
+    if (materials.length > 0) {
+      console.log("can't add same keword");
+      return;
+    }
 
     if (this.materialId === "new") await addNewMaterial(material);
     else await updateMaterial(material);
