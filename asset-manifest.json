@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/brainstorm/static/css/main.19c847f9.chunk.css",
+    "main.js": "/brainstorm/static/js/main.7f9e3398.chunk.js",
+    "main.js.map": "/brainstorm/static/js/main.7f9e3398.chunk.js.map",
+    "runtime-main.js": "/brainstorm/static/js/runtime-main.74a3976a.js",
+    "runtime-main.js.map": "/brainstorm/static/js/runtime-main.74a3976a.js.map",
+    "static/css/2.62c1cd45.chunk.css": "/brainstorm/static/css/2.62c1cd45.chunk.css",
+    "static/js/2.f78a938e.chunk.js": "/brainstorm/static/js/2.f78a938e.chunk.js",
+    "static/js/2.f78a938e.chunk.js.map": "/brainstorm/static/js/2.f78a938e.chunk.js.map",
+    "index.html": "/brainstorm/index.html",
+    "precache-manifest.ff73e9444b8a63226a5760c27ba8d23d.js": "/brainstorm/precache-manifest.ff73e9444b8a63226a5760c27ba8d23d.js",
+    "service-worker.js": "/brainstorm/service-worker.js",
+    "static/css/2.62c1cd45.chunk.css.map": "/brainstorm/static/css/2.62c1cd45.chunk.css.map",
+    "static/css/main.19c847f9.chunk.css.map": "/brainstorm/static/css/main.19c847f9.chunk.css.map",
+    "static/js/2.f78a938e.chunk.js.LICENSE.txt": "/brainstorm/static/js/2.f78a938e.chunk.js.LICENSE.txt",
+    "static/media/font-awesome.css": "/brainstorm/static/media/fontawesome-webfont.fee66e71.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.74a3976a.js",
+    "static/css/2.62c1cd45.chunk.css",
+    "static/js/2.f78a938e.chunk.js",
+    "static/css/main.19c847f9.chunk.css",
+    "static/js/main.7f9e3398.chunk.js"
+  ]
+}
