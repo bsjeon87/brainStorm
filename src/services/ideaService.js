@@ -167,7 +167,10 @@ export async function updateIdeaWithMaterials(new_idea) {
       "ideas",
       false
     );
+
     let material = getMaterial(m.material_id);
+    if (material.ideas === null || material.ideas === undefined)
+      material.ideas = [];
     material.ideas.push(idea._id);
   });
 
