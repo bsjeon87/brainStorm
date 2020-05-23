@@ -36,6 +36,7 @@ class Firebase {
     this.provider.addScope("profile");
     this.provider.addScope("email");
     this.userID = 0;
+
     app
       .auth()
       .signInWithPopup(this.provider)
@@ -49,8 +50,11 @@ class Firebase {
         this.userID = user.uid;
         this.login_state = true;
         LoginHandler.setLogin(true, result.user);
+        this.login_popup_state = true;
+      })
+      .catch((Err) => {
+        this.login_popup_state = false;
       });
-    this.login_popup_state = true;
   }
 
   getCollection(paths) {
