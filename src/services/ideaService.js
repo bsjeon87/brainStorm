@@ -112,6 +112,9 @@ export async function removeIdea(idea) {
     if (result === true) {
       console.log("update material ");
     }
+    m.ideas = m.ideas.filter((i) => {
+      return i.idea_id !== idea._id;
+    });
   });
 
   await firebase.delete(["ideas", user.uid, "idea", idea._id]);
