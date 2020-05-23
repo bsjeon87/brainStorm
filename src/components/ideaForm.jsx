@@ -27,9 +27,15 @@ class IdeaForm extends Form {
   };
 
   handleMaterialTagClick = (tag) => {
+    const materials = getMaterials();
+    const material = materials.find((m) => {
+      return m.keyword === tag;
+    });
+
     const filtered_tags = this.state.pickedMaterials.filter(
       (t) => t.keyword !== tag
     );
+    this.state.materials.push(material);
     this.setState({ pickedMaterials: filtered_tags });
   };
 
@@ -60,8 +66,7 @@ class IdeaForm extends Form {
   };
 
   componentDidMount() {
-    const materials = getMaterials();
-    this.setState({ materials });
+    let materials = getMaterials();
 
     const ideaid = this.props.match.params.id;
     this.ideaid = ideaid;
@@ -71,15 +76,21 @@ class IdeaForm extends Form {
     if (!idea) return this.props.history.replace("/not-found");
     console.log("pickup1", idea.materials);
     console.log("materials", materials);
-    this.state.pickedMaterials = [
-      ...materials.filter((m) => {
-        for (var index in idea.materials) {
-          if (m._id === idea.materials[index].material_id) return true;
-        }
-        return false;
-      }),
-    ];
-    console.log("pickup", this.pickedMaterials);
+    this.state.pickedMaterials = materials.filter((m) => {
+      for (var index in idea.materials) {
+        if (m._id === idea.materials[index].material_id) return true;
+      }
+      return false;
+    });
+    materials = materials.filter((m) => {
+      for (var index in this.state.pickedMaterials) {
+        if (m._id === this.state.pickedMaterials[index]._id) return false;
+      }
+      return true;
+    });
+
+    this.setState({ materials });
+    console.log("pickup", this.state.pickedMaterials);
     this.setState({ data: this.mapToViewModel(idea) });
   }
 
@@ -111,7 +122,6 @@ class IdeaForm extends Form {
     const material_tags = pickedMaterials.map((m) => {
       return m.keyword; // {} 사용시 return을 명시해야함. () 인경우 return을 내포함.
     });
-    console.log("draw", pickedMaterials);
     return (
       <div>
         <h1>Idea Form</h1>
