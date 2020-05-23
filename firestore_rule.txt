@@ -26,3 +26,7 @@ service cloud.firestore {
     }   
   }
 }
+
+승인된 도메인에
+bsjeon87.github.io 
+추가
