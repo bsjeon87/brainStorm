@@ -125,11 +125,16 @@ class IdeaForm extends Form {
     return (
       <div>
         <h1>Idea Form</h1>
+        <div align="right">
+          <button className="btn btn-primary" onClick={this.handlePickmaterial}>
+            pick materials
+          </button>
+          <Tags
+            tags={material_tags}
+            onClose={this.handleMaterialTagClick}
+          ></Tags>
+        </div>
 
-        <button className="btn btn-primary" onClick={this.handlePickmaterial}>
-          pick materials
-        </button>
-        <Tags tags={material_tags} onClose={this.handleMaterialTagClick}></Tags>
         <form onSubmit={this.handleSubmit.bind(this)}>
           {this.renderInput("title", "Title", 5)}
           {
