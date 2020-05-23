@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import { Link } from "react-router-dom";
 import {
   getIdeas,
   getMaterial,
@@ -60,10 +61,12 @@ class MaterialForm extends Form {
     return (
       <div>
         <h1>Material Form</h1>
-        {ideas.map((i) => {
-          return <div key={i._id}>{i.title}</div>; // {} 사용시 return을 명시해야함. () 인경우 return을 내포함.
-        })}
-
+        <div align="right">
+          <div>related ideas</div>
+          {ideas.map((i) => {
+            return <Link to={`/home/ideas/${i._id}`}>{i.title}</Link>;
+          })}
+        </div>
         <form onSubmit={this.handleSubmit.bind(this)}>
           {this.renderInput("keyword", "Keyword")}
           {
