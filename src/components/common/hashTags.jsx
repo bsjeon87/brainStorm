@@ -7,9 +7,9 @@ class Tags extends Component {
     console.log(tags);
     return (
       <div className="tags-input" data-name="tags-input">
-        {tags.map((tag) => {
+        {tags.map((tag, index) => {
           return (
-            <span className="tag">
+            <span className="tag" key={index}>
               {tag}
               <span className="close" onClick={() => onClose(tag)}></span>
             </span>
